@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { ScrapperController } from '../controllers/scrapper.js'
+import { ScrapperController } from '../controllers/scrapper'
 
 export const scrapperRouter = Router()
 
