@@ -1,5 +1,6 @@
 import puppeteer from "puppeteer";
 import { closeModal } from "./closeModal";
+import { scrollPage } from "./scroll";
 
 export const puppeteerHandler = async () => {
   console.log("inicializando puppeteer");
@@ -7,9 +8,10 @@ export const puppeteerHandler = async () => {
     const browser = await puppeteer.launch({ headless: false, slowMo: 1000 });
     const page = await browser.newPage();
     await page.goto(
-      "https://www.facebook.com/marketplace/106423786059675/search?query=gol%20country"
+      "https://www.facebook.com/marketplace/106423786059675/search?minPrice=2000000&maxPrice=3000000&query=kawasaki&exact=false"
     );
     await closeModal(page);
+    await scrollPage(page)
     const arrayLinks = await page.evaluate(() => {
       const nodesMarketPlace = (globalThis as any).document.querySelectorAll(
         'a[href^="/marketplace/item/"]'
