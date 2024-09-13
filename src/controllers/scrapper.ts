@@ -1,5 +1,5 @@
 import { type Request, type Response } from "express";
-import { puppeteerHandler } from "../lib/puppeteer";
+import { puppeteerHandler } from "../lib/puppeteer/puppeteer";
 export class ScrapperController {
   static async getAll(req: Request, res: Response) {
     console.log("Get all");
