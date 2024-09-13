@@ -1,60 +1,46 @@
-import { Page } from "puppeteer";
-import { PublicationData } from "../types/publicationData";
+import puppeteer from 'puppeteer';
+import { Page } from 'puppeteer';
+import { PublicationData } from '../types/publicationData';
 
-export const getDataOfPageLink = async (
-  page: Page
-): Promise<PublicationData | null> => {
+export const getDataOfPageLink = async (page: Page): Promise<PublicationData | null> => {
   try {
-    /**
-     * -1 get a h1 title element
-     * -2 get a price
-     */
-    const dataOfPage = await page.evaluate(() => {
-      const linkPage = (globalThis as any).window.location.href as string;
-
-      const titleElement = (globalThis as any).document
-        .querySelector("h1")
-        .querySelector("span");
-      const title = titleElement
-        ? titleElement.textContent?.trim()
-        : "No title";
-
-      const priceElement = Array.from(
-        (globalThis as any).document.querySelectorAll("span")
-      ).find((span: any) => span.textContent.trim().startsWith("$"));
-      const price = priceElement
-        ? (priceElement as any).textContent.trim()
-        : "No price";
+    const dataOfPage = await page.evaluate(async () => {
+      const linkPage = (globalThis as any ).window.location.href;
+      const firstImageElement=(globalThis as any) .document.querySelector('img') 
+      const titleElement = (globalThis as any ).document.querySelector('h1 span');
+      const title = titleElement ? titleElement.textContent?.trim() : 'No title';
+      console.log(firstImageElement)
+      const img=firstImageElement.src
+      console.log(img)
+      const priceElement  = Array.from((globalThis as any ).document.querySelectorAll('span')).find((span :any) =>
+        span.textContent?.trim().startsWith('$')
+      ) as any
+      const price = priceElement ? priceElement.textContent?.trim() : 'No price'
 
       let textFromSpans: string[] = [];
 
-      // Buscar el último div con la clase exacta 'xod5an3'
-      const divsWithExactClass = Array.from(
-        (globalThis as any).document.querySelectorAll("div.xod5an3")
-      ).filter((div: any) => div.classList.length === 1);
-
-      const ultimoDiv = divsWithExactClass[divsWithExactClass.length - 1];
-
-      if (ultimoDiv) {
-        // Intentar hacer clic en el botón si existe
-        const button: any = (ultimoDiv as any).querySelector('[role="button"]');
-
+      // Buscar el div de descripción
+      const divDescription = (globalThis as any ).document.querySelector('div.xz9dl7a.x4uap5.xsag5q8.xkhd6sd.x126k92a');
+      if (divDescription) {
+        // Esperar a que el botón sea clickeado
+        const button = divDescription.querySelector('div[role="button"]');
         if (button) {
-          button.click();
-          console.log("Se hizo clic en el botón.");
-        } else {
-          console.log("No se encontró ningún botón con role='button'.");
+          await new Promise<void>(resolve => {
+            button.addEventListener('click', () => {
+              resolve();
+            }, { once: true });
+            button.click();
+          });
         }
-        // Si se encuentra el último div, extraer los spans y su contenido
-        const spansInDiv: any = (ultimoDiv as any).querySelectorAll("span");
-        textFromSpans = Array.from(spansInDiv).map(
-          (span: any) => span.textContent?.trim() || ""
-        );
-        const combinedText = textFromSpans.join(" ");
+
+        // Extraer los spans después del clic
+        const spansInDiv = divDescription.querySelectorAll('span');
+        textFromSpans = Array.from(spansInDiv).map((span:any) => span.textContent?.trim() || '');
       } else {
-        console.log("No se encontró ningún div con esa clase.");
+        console.log('No se encontró ningún div con esa clase.');
       }
-      const combinedText = textFromSpans.join(" ");
+
+      const combinedText = textFromSpans.join(' ');
       console.log(title, price, textFromSpans, linkPage);
 
       return {
@@ -62,14 +48,15 @@ export const getDataOfPageLink = async (
         price: price,
         description: combinedText,
         link: linkPage,
+        image:img
       };
     });
 
     return dataOfPage;
   } catch (error) {
-    console.error("Intentando recolectar data ha ocurrido un error:", error);
+    console.error('Intentando recolectar data ha ocurrido un error:', error);
     return null;
   } finally {
-    console.log("Data extraction attempt finished");
+    console.log('Data extraction attempt finished');
   }
 };

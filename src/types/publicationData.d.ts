@@ -3,4 +3,5 @@ export interface PublicationData {
     title:string,
     price:string,
     description:string
+    image:string
 }
