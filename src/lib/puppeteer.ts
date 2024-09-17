@@ -4,33 +4,62 @@ import { scrollPage } from "./scroll";
 import { getDataOfPageLink } from "./getDataOfPageLink";
 import { getAllLinks } from "./getAllLinks";
 import { PublicationData } from "../types/publicationData";
+import { type RequestParam } from "../types/req";
 
-export const puppeteerHandler = async () => {
-  console.log("inicializando puppeteer");
+type functionSse = (dataPage: PublicationData) => void;
+type functionComunicate = (message: string) => void;
+
+const defaultPublication: Omit<PublicationData, "link"> = {
+  description: "Sin descripción",
+  image: "Sin imagen",
+  price: "Sin precio",
+  title: "Sin titulo",
+};
+
+export const puppeteerHandler = async (
+  functionSse: functionSse,
+  RequestParam: RequestParam,
+  functionComunicate: functionComunicate
+) => {
+  let browser;
   try {
-    const browser = await puppeteer.launch({ headless: false, slowMo: 1000 });
+    console.log("Inicializando puppeteer.");
+    let message = `Inicializando...`;
+    functionComunicate(message);
+    browser = await puppeteer.launch({ headless: true, slowMo: 1000 });
     const page = await browser.newPage();
-    const dataOfAllPages: PublicationData[] = [];
-    await page.goto(
-      "https://www.facebook.com/marketplace/106423786059675/search?minPrice=3000000&maxPrice=7000000&query=gol%20trend&exact=false"
-    );
+    const { link } = RequestParam;
+    await page.goto(link);
     await closeModal(page);
+
+    // Obtiene todos los links de los artículos
     const articleLinks = await getAllLinks(page);
+    message = `Cantidad de articulos encontrados ${articleLinks.length}`;
+    functionComunicate(message);
+
     for (const link of articleLinks) {
+      console.log("Analizando:", link);
       const newPageOfLink = await browser.newPage();
       await newPageOfLink.goto(link);
       await closeModal(newPageOfLink);
-      const dataPage = await getDataOfPageLink(newPageOfLink);
-      if (dataPage) {
-        dataOfAllPages.push(dataPage);
-      }
-      console.log(dataPage);
-      // newPageOfLink.close();
+
+      // Obtén los datos de la página del artículo
+      const dataPage = (await getDataOfPageLink(newPageOfLink)) ?? {
+        ...defaultPublication,
+        link,
+      };
+
+      // Enviar los datos del artículo al cliente mediante SSE
+      functionSse(dataPage);
+      await newPageOfLink.close();
     }
-    console.log(dataOfAllPages);
+    message = `scrapeo de articulos terminado`;
+    functionComunicate(message);
   } catch (error) {
-    console.log(error);
+    console.error("Error en puppeteerHandler:", error);
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
   }
 };
-
-puppeteerHandler();
