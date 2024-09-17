@@ -5,3 +5,4 @@ export interface PublicationData {
     description:string
     image:string
 }
+
