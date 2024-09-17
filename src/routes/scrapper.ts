@@ -4,4 +4,4 @@ import { ScrapperController } from '../controllers/scrapper'
 
 export const scrapperRouter = Router()
 
-scrapperRouter.get('/', ScrapperController.getAll)
+scrapperRouter.get('/', ScrapperController.generateScrap)
