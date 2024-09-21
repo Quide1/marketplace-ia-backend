@@ -1,4 +1,5 @@
 export interface PublicationData {
+    uuid:string
     link:string,
     title:string,
     price:string,
@@ -6,3 +7,4 @@ export interface PublicationData {
     image:string
 }
 
+export type PublicationDataExclude = Omit<PublicationData,"link"|'uuid'>
