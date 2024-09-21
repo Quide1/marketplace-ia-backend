@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import { Page } from 'puppeteer';
 import { PublicationData } from '../types/publicationData';
-
+import { v4 as uuidv4 } from 'uuid';
 export const getDataOfPageLink = async (page: Page): Promise<PublicationData | null> => {
   try {
     const dataOfPage = await page.evaluate(async () => {
@@ -39,7 +39,6 @@ export const getDataOfPageLink = async (page: Page): Promise<PublicationData | n
       } else {
         console.log('No se encontró ningún div con esa clase.');
       }
-
       const combinedText = textFromSpans.join(' ');
       console.log(title, price, textFromSpans, linkPage);
 
@@ -51,8 +50,11 @@ export const getDataOfPageLink = async (page: Page): Promise<PublicationData | n
         image:img
       };
     });
-
-    return dataOfPage;
+    
+    return {
+      ...dataOfPage,
+      uuid:uuidv4()
+    };
   } catch (error) {
     console.error('Intentando recolectar data ha ocurrido un error:', error);
     return null;
