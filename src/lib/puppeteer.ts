@@ -9,11 +9,12 @@ import { type RequestParam } from "../types/req";
 type functionSse = (dataPage: PublicationData) => void;
 type functionComunicate = (message: string) => void;
 
-const defaultPublication: Omit<PublicationData, "link"> = {
+const defaultPublication: Omit<PublicationData ,"link"> = {
   description: "Sin descripción",
   image: "Sin imagen",
   price: "Sin precio",
   title: "Sin titulo",
+  uuid:"no tiene uuid"
 };
 
 export const puppeteerHandler = async (
@@ -34,7 +35,7 @@ export const puppeteerHandler = async (
 
     // Obtiene todos los links de los artículos
     const articleLinks = await getAllLinks(page);
-    message = `Cantidad de articulos encontrados ${articleLinks.length}`;
+    message = `Cantidad de articulos encontrados:${articleLinks.length}`;
     functionComunicate(message);
 
     for (const link of articleLinks) {
@@ -47,6 +48,7 @@ export const puppeteerHandler = async (
       const dataPage = (await getDataOfPageLink(newPageOfLink)) ?? {
         ...defaultPublication,
         link,
+        uuid:"no tiene uuid"
       };
 
       // Enviar los datos del artículo al cliente mediante SSE
