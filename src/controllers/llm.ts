@@ -1,10 +1,18 @@
-import { type Request, type Response } from "express";
-import { RequestParam } from "../types/req";
+import { json, type Request, type Response } from "express";
+import { RequestBody } from "../types/req";
 import { generateText } from "../lib/gemini/gemini";
 export class llmController {
-  static async generateResponse(req: Request<{}, {}, {}, RequestParam>, res: Response) {
+  static async generateResponse(req: Request<RequestBody>, res: Response) {
     try {
-      const text = await generateText()
+      const {questionPrompt,dataArticles} = req.body
+      if(!questionPrompt || !dataArticles){
+        return res.json({
+          status:"303",
+          data:"Faltan campos"
+        })
+      }
+      const generateTextParams={questionPrompt,dataArticles}
+      const text = await generateText(generateTextParams)
       res.json({
         status:"200",
         data:text
