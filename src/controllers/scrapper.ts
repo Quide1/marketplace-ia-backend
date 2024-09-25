@@ -1,12 +1,13 @@
 import { type Request, type Response } from "express";
-import { puppeteerHandler } from "../lib/puppeteer";
+import { puppeteerHandler } from "../lib/puppeteer/puppeteer";
 import { PublicationData } from "../types/publicationData";
 import { RequestParam } from "../types/req";
 
 export class ScrapperController {
   static async generateScrap(req: Request<{}, {}, {}, RequestParam>, res: Response) {
     try {
-      const { link } = req.query;
+      const { link,timeScroll} = req.query;
+
       if (!link) {
         return res.status(400).json({ error: 'Link is required' });
       }
@@ -28,7 +29,7 @@ export class ScrapperController {
         res.write(`data: ${JSON.stringify(dataArticle)}\n\n`);
       };
 
-      await puppeteerHandler(responseSse, { link }, comunicateItems);
+      await puppeteerHandler(responseSse,  {link,timeScroll} , comunicateItems);
 
       console.log('Scraping completado');
 

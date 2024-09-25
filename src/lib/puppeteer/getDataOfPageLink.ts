@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import { Page } from 'puppeteer';
-import { PublicationData } from '../types/publicationData';
+import { PublicationData } from '../../types/publicationData';
 import { v4 as uuidv4 } from 'uuid';
 export const getDataOfPageLink = async (page: Page): Promise<PublicationData | null> => {
   try {

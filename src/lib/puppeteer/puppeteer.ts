@@ -1,10 +1,9 @@
 import puppeteer from "puppeteer";
 import { closeModal } from "./closeModal";
-import { scrollPage } from "./scroll";
 import { getDataOfPageLink } from "./getDataOfPageLink";
 import { getAllLinks } from "./getAllLinks";
-import { PublicationData } from "../types/publicationData";
-import { type RequestParam } from "../types/req";
+import { PublicationData } from "../../types/publicationData";
+import { type RequestParam } from "../../types/req";
 
 type functionSse = (dataPage: PublicationData) => void;
 type functionComunicate = (message: string) => void;
@@ -29,12 +28,13 @@ export const puppeteerHandler = async (
     functionComunicate(message);
     browser = await puppeteer.launch({ headless: true, slowMo: 1000 });
     const page = await browser.newPage();
-    const { link } = RequestParam;
+    const { link,timeScroll} = RequestParam;
+    
+    console.log('llego desde el front estos query params ',link,timeScroll)
     await page.goto(link);
     await closeModal(page);
-
     // Obtiene todos los links de los artículos
-    const articleLinks = await getAllLinks(page);
+    const articleLinks = await getAllLinks(page,timeScroll);
     message = `Cantidad de articulos encontrados:${articleLinks.length}`;
     functionComunicate(message);
 
