@@ -1,3 +1,4 @@
+
 export interface PublicationData {
     uuid:string
     link:string,
@@ -8,3 +9,8 @@ export interface PublicationData {
 }
 
 export type PublicationDataExclude = Omit<PublicationData,"link"|'uuid'>
+
+
+export interface PublicationDataFromFront extends PublicationData {
+    isFavorite:boolean
+}
