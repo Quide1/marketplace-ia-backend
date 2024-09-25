@@ -9,9 +9,7 @@ export const getDataOfPageLink = async (page: Page): Promise<PublicationData | n
       const firstImageElement=(globalThis as any) .document.querySelector('img') 
       const titleElement = (globalThis as any ).document.querySelector('h1 span');
       const title = titleElement ? titleElement.textContent?.trim() : 'No title';
-      console.log(firstImageElement)
       const img=firstImageElement.src
-      console.log(img)
       const priceElement  = Array.from((globalThis as any ).document.querySelectorAll('span')).find((span :any) =>
         span.textContent?.trim().startsWith('$')
       ) as any
@@ -40,7 +38,6 @@ export const getDataOfPageLink = async (page: Page): Promise<PublicationData | n
         console.log('No se encontró ningún div con esa clase.');
       }
       const combinedText = textFromSpans.join(' ');
-      console.log(title, price, textFromSpans, linkPage);
 
       return {
         title: title,

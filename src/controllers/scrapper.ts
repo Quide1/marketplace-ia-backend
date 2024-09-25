@@ -19,7 +19,6 @@ export class ScrapperController {
       res.setHeader('Connection', 'keep-alive');
 
       const comunicateItems = (message: string) => {
-        console.log('Comunicando.', message);
         res.write(`event: comunicate\n`);
         res.write(`data: {"message": "${message}"}\n\n`); 
       };

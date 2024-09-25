@@ -4,8 +4,6 @@ import { Page } from "puppeteer";
  * y chromium
  */
 export const scrollPage = async (page: Page, maxTimeScroll: number) => {
-  console.log('Tiempo de scroll recibido:', maxTimeScroll);
-
   await page.evaluate(
     async (maxTimeScroll:number, distance:number, delay:number) => {
       return new Promise<void>((resolve) => {
