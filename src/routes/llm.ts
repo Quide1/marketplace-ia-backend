@@ -4,4 +4,4 @@ import { llmController } from '../controllers/llm'
 
 export const llmRouter = Router()
 
-llmRouter.get('/', llmController.generateResponse)
+llmRouter.post('/', llmController.generateResponse)

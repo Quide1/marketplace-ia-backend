@@ -5,12 +5,27 @@ export class llmController {
   static async generateResponse(req: Request<RequestBody>, res: Response) {
     try {
       const {questionPrompt,dataArticles} = req.body
-      if(!questionPrompt || !dataArticles){
+      console.log(questionPrompt,dataArticles)
+      console.log(req.body)
+      if(!questionPrompt && !dataArticles){
         return res.json({
-          status:"303",
-          data:"Faltan campos"
+          status:"404",
+          data:"Faltan ambos campos"
         })
       }
+      if(!questionPrompt && dataArticles){
+        return res.json({
+          status:"404",
+          data:"Falta la pregunta"
+        })
+      }
+      if(questionPrompt && !dataArticles){
+        return res.json({
+          status:"404",
+          data:"Faltan los articulos"
+        })
+      }
+      
       const generateTextParams={questionPrompt,dataArticles}
       const text = await generateText(generateTextParams)
       res.json({
