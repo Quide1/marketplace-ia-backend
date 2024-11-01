@@ -24,7 +24,7 @@ Este backend es la parte del servidor de una aplicación diseñada para hacer sc
 git clone https://github.com/Quide1/marketplace-ia-backend
 
 # Instala las dependencias
-cd nombre_del_repositorio_backend
+cd marketplace-ia-backend
 npm install
 
 # Inicia el servidor en modo desarrollo
