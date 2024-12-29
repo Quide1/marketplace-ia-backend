@@ -1,31 +1,31 @@
-# Backend para Scraping con IA en Facebook
+# Backend for AI Scraping on Facebook
 
-Este backend es la parte del servidor de una aplicación diseñada para hacer scraping de datos en Facebook utilizando una inteligencia artificial. Fue desarrollado con **Express** y **TypeScript**, e integra la **API de Gemini** junto con **Puppeteer** para el scraping automatizado. También utiliza **Server-Sent Events (SSE)** para la transmisión de datos en tiempo real al frontend.
+This backend serves as the server-side of an application designed to scrape data from Facebook using artificial intelligence. It was developed with **Express** and **TypeScript**, integrating the **Gemini API** alongside **Puppeteer** for automated scraping. Additionally, it uses **Server-Sent Events (SSE)** for real-time data streaming to the frontend.
 
-## Tecnologías Utilizadas
+## Technologies Used
 
-- **Express**: Framework para crear y gestionar el servidor HTTP.
-- **TypeScript**: Proporciona tipado estático para mayor robustez y mantenimiento del código.
-- **API de Gemini**: Servicio de inteligencia artificial utilizado para el procesamiento de datos.
-- **Puppeteer**: Herramienta para la automatización del navegador, utilizada en el scraping de datos de Facebook.
-- **Server-Sent Events (SSE)**: Protocolo para la transmisión de datos en tiempo real desde el servidor al frontend.
+- **Express**: A framework for creating and managing the HTTP server.
+- **TypeScript**: Provides static typing for greater code robustness and maintainability.
+- **Gemini API**: An AI service used for data processing.
+- **Puppeteer**: A browser automation tool used for Facebook data scraping.
+- **Server-Sent Events (SSE)**: A protocol for real-time data streaming from the server to the frontend.
 
-## Características
+## Features
 
-- **Scraping de datos en Facebook**: Se utiliza Puppeteer para simular un navegador y realizar scraping.
-- **Procesamiento con IA**: La API de Gemini procesa la información extraída antes de enviarla al frontend.
-- **Transmisión en tiempo real con SSE**: Los datos procesados se envían al frontend a medida que están disponibles.
-- **Desarrollo con TypeScript**: Mejora la estabilidad del código y facilita el mantenimiento.
+- **Facebook Data Scraping**: Puppeteer is used to simulate a browser and perform scraping.
+- **AI Processing**: The Gemini API processes the extracted information before sending it to the frontend.
+- **Real-Time Streaming with SSE**: Processed data is sent to the frontend as it becomes available.
+- **TypeScript Development**: Enhances code stability and facilitates maintenance.
 
-## Instalación
+## Installation
 
 ```bash
-# Clona el repositorio
+# Clone the repository
 git clone https://github.com/Quide1/marketplace-ia-backend
 
-# Instala las dependencias
+# Install dependencies
 cd marketplace-ia-backend
 npm install
 
-# Inicia el servidor en modo desarrollo
+# Start the server in development mode
 npm run dev
